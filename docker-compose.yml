@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  frontend:
+    build: frontend
+    ports:
+      - 8501:8501
+    depends_on:
+      - backend
+    volumes:
+      - ./storage:/storage
+    
+  backend:
+    build: backend
+    volumes:
+      - ./storage:/storage
+    shm_size: '4gb'
+    deploy:
+      resources:
+        reservations:
+          devices:
+          -  driver: nvidia
+             count: all
+             capabilities: [gpu]
